@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login | DSA</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(135deg, #eef2ff, #fdf4ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 42px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            padding: 13px 14px;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #4f46e5;
+            border: none;
+            color: white;
+            padding: 13px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .login-btn:hover {
+            background: #3730a3;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 25px;
+            color: #6b7280;
+        }
+
+        .bottom-text a {
+            color: #4f46e5;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="login-card">
+
+    <div class="logo">
+        DSA
+    </div>
+
+    <h2>Student Login</h2>
+
+    <p class="subtitle">
+        Welcome back to Digital Skills Academy
+    </p>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Username
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                class="form-control"
+                placeholder="Enter your username"
+                required
+            >
+
+        </div>
+
+
+        <div class="mb-4">
+
+            <label class="form-label">
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                class="form-control"
+                placeholder="Enter your password"
+                required
+            >
+
+        </div>
+
+
+        <button type="submit" class="login-btn">
+
+            <i class="bi bi-box-arrow-in-right me-2"></i>
+
+            Login
+
+        </button>
+
+    </form>
+
+
+    <div class="bottom-text">
+
+        Don't have an account?
+
+        <a href="{% url 'register_student' %}">
+            Create Account
+        </a>
+
+    </div>
+
+
+    <a href="{% url 'home' %}" class="back-home">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to DSA
+
+    </a>
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration | DSA</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(135deg, #eef2ff, #fdf4ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        h2 {
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            padding: 12px 14px;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+        }
+
+        .register-btn {
+            width: 100%;
+            background: #4f46e5;
+            border: none;
+            color: white;
+            padding: 13px;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .register-btn:hover {
+            background: #3730a3;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 25px;
+            color: #6b7280;
+        }
+
+        .bottom-text a {
+            color: #4f46e5;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="register-card">
+
+    <div class="logo">
+        DSA
+    </div>
+
+    <h2>Create Student Account</h2>
+
+    <p class="subtitle">
+        Join DSA Digital Skills Academy
+    </p>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Username
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                class="form-control"
+                placeholder="Enter your username"
+                required
+            >
+
+        </div>
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="Enter your email"
+                required
+            >
+
+        </div>
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                class="form-control"
+                placeholder="Create a password"
+                required
+            >
+
+        </div>
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                class="form-control"
+                placeholder="Confirm your password"
+                required
+            >
+
+        </div>
+
+
+        <button type="submit" class="register-btn">
+
+            <i class="bi bi-person-plus-fill me-2"></i>
+
+            Create Student Account
+
+        </button>
+
+    </form>
+
+
+    <div class="bottom-text">
+
+        Already have an account?
+
+        <a href="{% url 'student_login' %}">
+            Login
+        </a>
+
+    </div>
+
+
+    <a href="{% url 'home' %}" class="back-home">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to DSA
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

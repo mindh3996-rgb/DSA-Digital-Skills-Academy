@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile | DSA</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: white;
+            padding: 16px 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+        }
+
+        .brand {
+            font-size: 27px;
+            font-weight: 800;
+            color: #4f46e5;
+        }
+
+        .profile-container {
+            max-width: 750px;
+            margin: 50px auto;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .profile-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 25px;
+        }
+
+        h2 {
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 35px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .save-btn {
+            background: #4f46e5;
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .save-btn:hover {
+            background: #3730a3;
+        }
+
+        .cancel-btn {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 12px 25px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="container">
+
+        <div class="brand">
+            DSA.
+        </div>
+
+        <a href="{% url 'student_dashboard' %}"
+           class="text-decoration-none">
+
+            <i class="bi bi-arrow-left"></i>
+            Dashboard
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="profile-container">
+
+        <div class="profile-card">
+
+            <div class="profile-icon">
+
+                <i class="bi bi-person-fill"></i>
+
+            </div>
+
+
+            <h2>Edit Student Profile</h2>
+
+            <p class="subtitle">
+                Update your DSA student information
+            </p>
+
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="full_name"
+                        class="form-control"
+                        value="{{ profile.full_name }}"
+                        placeholder="Enter your full name"
+                    >
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        value="{{ request.user.email }}"
+                        placeholder="Enter your email"
+                    >
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        class="form-control"
+                        value="{{ profile.phone }}"
+                        placeholder="+92 300 0000000"
+                    >
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        name="city"
+                        class="form-control"
+                        value="{{ profile.city }}"
+                        placeholder="Enter your city"
+                    >
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Profile Picture
+                    </label>
+
+                    <input
+                        type="file"
+                        name="profile_picture"
+                        class="form-control"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        About You
+                    </label>
+
+                    <textarea
+                        name="bio"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Write something about yourself..."
+                    >{{ profile.bio }}</textarea>
+
+                </div>
+
+
+                <div class="d-flex gap-2">
+
+                    <button
+                        type="submit"
+                        class="save-btn">
+
+                        <i class="bi bi-check-lg me-1"></i>
+
+                        Save Changes
+
+                    </button>
+
+
+                    <a
+                        href="{% url 'student_dashboard' %}"
+                        class="cancel-btn">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
