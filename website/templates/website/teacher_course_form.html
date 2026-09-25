@@ -1,0 +1,459 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+{{ form_title }} | DSA Digital Skills Academy
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .course-form-page {
+        padding: 35px 0 60px;
+    }
+
+    .form-header {
+        margin-bottom: 25px;
+    }
+
+    .form-header h2 {
+        color: #24133f;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .form-header p {
+        color: #777;
+        margin: 0;
+    }
+
+    .course-form-card {
+        background: white;
+        border: 1px solid #eeeaf4;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 5px 22px rgba(36,19,63,.07);
+    }
+
+    .form-section-title {
+        color: #24133f;
+        font-size: 17px;
+        font-weight: 750;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eeeaf4;
+    }
+
+    .form-label {
+        color: #3c3150;
+        font-size: 13px;
+        font-weight: 650;
+        margin-bottom: 7px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #ddd7e7;
+        border-radius: 10px;
+        padding: 11px 13px;
+        font-size: 13px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #6f42c1;
+        box-shadow: 0 0 0 .2rem rgba(111,66,193,.12);
+    }
+
+    textarea.form-control {
+        min-height: 130px;
+        resize: vertical;
+    }
+
+    .image-preview {
+        width: 100%;
+        max-width: 260px;
+        height: 160px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid #eeeaf4;
+        margin-top: 10px;
+    }
+
+    .current-image-text {
+        color: #888;
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .active-box {
+        background: #faf9fc;
+        border-radius: 12px;
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    .active-box .form-check-label {
+        color: #3c3150;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eeeaf4;
+    }
+
+    .save-btn,
+    .cancel-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        text-decoration: none;
+        border: none;
+        border-radius: 10px;
+        padding: 11px 20px;
+        font-size: 13px;
+        font-weight: 650;
+        cursor: pointer;
+    }
+
+    .save-btn {
+        background: #6f42c1;
+        color: white;
+    }
+
+    .save-btn:hover {
+        background: #59339d;
+        color: white;
+    }
+
+    .cancel-btn {
+        background: #f0eaff;
+        color: #6f42c1;
+    }
+
+    .cancel-btn:hover {
+        background: #6f42c1;
+        color: white;
+    }
+
+    @media (max-width: 600px) {
+
+        .course-form-card {
+            padding: 20px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container course-form-page">
+
+    <div class="form-header">
+
+        <h2>
+            {{ form_title }}
+        </h2>
+
+        <p>
+            Add or update course information for DSA Digital Skills Academy.
+        </p>
+
+    </div>
+
+
+    <div class="course-form-card">
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+
+            <h5 class="form-section-title">
+
+                <i class="bi bi-book me-2"></i>
+
+                Course Information
+
+            </h5>
+
+
+            <!-- TITLE -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Course Title
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    placeholder="e.g. Python & Django Development"
+                    value="{% if course %}{{ course.title }}{% endif %}"
+                    required>
+
+            </div>
+
+
+            <div class="row">
+
+
+                <!-- SLUG -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Course Slug
+                    </label>
+
+                    <input
+                        type="text"
+                        name="slug"
+                        class="form-control"
+                        placeholder="python-django-development"
+                        value="{% if course %}{{ course.slug }}{% endif %}">
+
+                    <small class="text-muted">
+                        Leave empty to generate automatically.
+                    </small>
+
+                </div>
+
+
+                <!-- DURATION -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Duration
+                    </label>
+
+                    <input
+                        type="text"
+                        name="duration"
+                        class="form-control"
+                        placeholder="e.g. 3 Months"
+                        value="{% if course %}{{ course.duration }}{% endif %}"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+
+                <!-- LEVEL -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Course Level
+                    </label>
+
+                    <select
+                        name="level"
+                        class="form-select">
+
+                        <option value="Beginner"
+                            {% if course and course.level == "Beginner" %}selected{% endif %}>
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate"
+                            {% if course and course.level == "Intermediate" %}selected{% endif %}>
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced"
+                            {% if course and course.level == "Advanced" %}selected{% endif %}>
+                            Advanced
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PRICE -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Course Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="price"
+                        class="form-control"
+                        step="0.01"
+                        min="0"
+                        placeholder="0"
+                        value="{% if course %}{{ course.price }}{% else %}0{% endif %}">
+
+                </div>
+
+            </div>
+
+
+            <!-- SHORT DESCRIPTION -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Short Description
+                </label>
+
+                <input
+                    type="text"
+                    name="short_description"
+                    class="form-control"
+                    maxlength="300"
+                    placeholder="Short description for course cards"
+                    value="{% if course %}{{ course.short_description }}{% endif %}"
+                    required>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Full Course Description
+                </label>
+
+                <textarea
+                    name="description"
+                    class="form-control"
+                    placeholder="Write complete course details...">{% if course %}{{ course.description }}{% endif %}</textarea>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Course Image
+                </label>
+
+                <input
+                    type="file"
+                    name="image"
+                    class="form-control"
+                    accept="image/*">
+
+                {% if course and course.image %}
+
+                    <div class="current-image-text">
+                        Current course image:
+                    </div>
+
+                    <img
+                        src="{{ course.image.url }}"
+                        class="image-preview"
+                        alt="{{ course.title }}">
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ACTIVE -->
+
+            <div class="active-box">
+
+                <div class="form-check">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="is_active"
+                        id="is_active"
+
+                        {% if course %}
+
+                            {% if course.is_active %}
+                                checked
+                            {% endif %}
+
+                        {% else %}
+
+                            checked
+
+                        {% endif %}>
+
+                    <label
+                        class="form-check-label"
+                        for="is_active">
+
+                        Course is Active
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Save Course
+
+                </button>
+
+
+                <a
+                    href="{% url 'teacher_courses' %}"
+                    class="cancel-btn">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,948 +1,1426 @@
+{% extends "website/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}
+DSA Digital Skills Academy | Home
+{% endblock %}
 
-    <title>DSA | Digital Skills Academy</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+{% block extra_css %}
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<style>
 
-    <style>
+    /* ==============================
+       HOME PAGE
+    ============================== */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    .home-page {
+        background: #f8f7fc;
+        color: #17121f;
+    }
+
+
+    /* ==============================
+       HERO
+    ============================== */
+
+    .dsa-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 95px 0 70px;
+
+        background:
+            radial-gradient(
+                circle at 85% 15%,
+                rgba(124, 58, 237, 0.13),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 10% 90%,
+                rgba(139, 92, 246, 0.08),
+                transparent 28%
+            ),
+            linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #fbf9ff 55%,
+                #f4efff 100%
+            );
+    }
+
+
+    .hero-grid {
+        position: absolute;
+        inset: 0;
+
+        background-image:
+            linear-gradient(
+                rgba(124, 58, 237, 0.035) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                90deg,
+                rgba(124, 58, 237, 0.035) 1px,
+                transparent 1px
+            );
+
+        background-size: 55px 55px;
+        pointer-events: none;
+    }
+
+
+    .hero-glow {
+        position: absolute;
+        width: 330px;
+        height: 330px;
+
+        border-radius: 50%;
+        background: rgba(124, 58, 237, 0.10);
+
+        filter: blur(80px);
+
+        top: -160px;
+        right: -100px;
+    }
+
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+
+        padding: 9px 17px;
+        margin-bottom: 22px;
+
+        background: #ffffff;
+        border: 1px solid #e5d9ff;
+        border-radius: 50px;
+
+        color: #6d28d9;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        box-shadow:
+            0 8px 25px rgba(109, 40, 217, 0.08);
+    }
+
+
+    .badge-dot {
+        width: 8px;
+        height: 8px;
+
+        border-radius: 50%;
+
+        background: #7c3aed;
+
+        box-shadow:
+            0 0 0 5px rgba(124, 58, 237, 0.10);
+    }
+
+
+    .hero-title {
+        max-width: 800px;
+
+        margin: 0;
+
+        font-size: clamp(44px, 6vw, 72px);
+        line-height: 1.08;
+
+        font-weight: 800;
+
+        letter-spacing: -2px;
+
+        color: #17121f;
+    }
+
+
+    .hero-title span {
+        display: block;
+
+        margin-top: 6px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #6d28d9,
+                #7c3aed,
+                #9333ea
+            );
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+
+    .hero-description {
+        max-width: 680px;
+
+        margin-top: 24px;
+
+        color: #6b6475;
+
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+
+    .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 13px;
+
+        margin-top: 30px;
+    }
+
+
+    .hero-primary,
+    .hero-secondary {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 9px;
+
+        padding: 14px 23px;
+
+        border-radius: 10px;
+
+        text-decoration: none;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        transition: all 0.3s ease;
+    }
+
+
+    .hero-primary {
+        background:
+            linear-gradient(
+                135deg,
+                #7c3aed,
+                #6d28d9
+            );
+
+        color: white;
+
+        box-shadow:
+            0 10px 25px rgba(109, 40, 217, 0.22);
+    }
+
+
+    .hero-primary:hover {
+        color: white;
+
+        transform: translateY(-3px);
+
+        box-shadow:
+            0 14px 32px rgba(109, 40, 217, 0.30);
+    }
+
+
+    .hero-secondary {
+        background: white;
+
+        color: #4b4454;
+
+        border: 1px solid #e5e0eb;
+
+        box-shadow:
+            0 6px 20px rgba(0,0,0,0.04);
+    }
+
+
+    .hero-secondary:hover {
+        color: #6d28d9;
+
+        background: #faf7ff;
+
+        border-color: #c4b5fd;
+
+        transform: translateY(-3px);
+    }
+
+
+    .hero-features {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 25px;
+
+        margin-top: 30px;
+    }
+
+
+    .hero-feature {
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+
+        color: #625a6b;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+
+    .hero-feature i {
+        color: #7c3aed;
+        font-size: 16px;
+    }
+
+
+    /* ==============================
+       STATS
+    ============================== */
+
+    .stats-row {
+        position: relative;
+        z-index: 3;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 14px;
+
+        margin-top: 60px;
+    }
+
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+
+        min-height: 82px;
+
+        padding: 15px 17px;
+
+        background:
+            rgba(255,255,255,0.90);
+
+        border: 1px solid #e8e1f0;
+
+        border-radius: 14px;
+
+        box-shadow:
+            0 10px 30px rgba(60,30,90,0.06);
+
+        transition: 0.3s;
+    }
+
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+
+        border-color: #d8c7f5;
+
+        box-shadow:
+            0 15px 35px rgba(109,40,217,0.10);
+    }
+
+
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background: #f1eaff;
+
+        color: #7c3aed;
+
+        font-size: 18px;
+    }
+
+
+    .stat-card h3 {
+        margin: 0;
+
+        font-size: 17px;
+        font-weight: 800;
+
+        color: #21182b;
+    }
+
+
+    .stat-card p {
+        margin: 3px 0 0;
+
+        color: #746b7d;
+
+        font-size: 11px;
+    }
+
+
+    /* ==============================
+       SECTIONS
+    ============================== */
+
+    .home-section {
+        padding: 90px 0;
+    }
+
+
+    .section-heading {
+        text-align: center;
+
+        max-width: 750px;
+
+        margin: 0 auto 50px;
+    }
+
+
+    .section-heading h2 {
+        font-size: 40px;
+
+        font-weight: 800;
+
+        color: #21182b;
+    }
+
+
+    .section-heading p {
+        margin-top: 12px;
+
+        color: #746b7d;
+
+        line-height: 1.7;
+    }
+
+
+    /* ==============================
+       COURSE CARDS
+    ============================== */
+
+    .course-card {
+        height: 100%;
+
+        padding: 30px;
+
+        background: white;
+
+        border: 1px solid #eee8f7;
+
+        border-radius: 17px;
+
+        box-shadow:
+            0 8px 25px rgba(40,20,70,0.05);
+
+        transition: all 0.3s ease;
+    }
+
+
+    .course-card:hover {
+        transform: translateY(-8px);
+
+        border-color: #d8c7f5;
+
+        box-shadow:
+            0 18px 40px rgba(109,40,217,0.12);
+    }
+
+
+    .course-icon {
+        width: 60px;
+        height: 60px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 20px;
+
+        border-radius: 14px;
+
+        background: #f1eaff;
+
+        color: #7c3aed;
+
+        font-size: 27px;
+    }
+
+
+    .course-card h4 {
+        margin-bottom: 12px;
+
+        font-size: 21px;
+
+        font-weight: 750;
+
+        color: #21182b;
+    }
+
+
+    .course-card p {
+        min-height: 78px;
+
+        color: #746b7d;
+
+        line-height: 1.7;
+
+        font-size: 14px;
+    }
+
+
+    .course-btn {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        margin-top: 10px;
+
+        padding: 10px 16px;
+
+        border-radius: 9px;
+
+        background: #7c3aed;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        transition: 0.3s;
+    }
+
+
+    .course-btn:hover {
+        background: #6d28d9;
+
+        color: white;
+
+        transform: translateX(3px);
+    }
+
+
+    /* ==============================
+       ABOUT
+    ============================== */
+
+    .about-section {
+        background:
+            linear-gradient(
+                135deg,
+                #faf8ff,
+                #ffffff
+            );
+    }
+
+
+    .about-box {
+        padding: 55px;
+
+        background: white;
+
+        border: 1px solid #eee8f7;
+
+        border-radius: 22px;
+
+        box-shadow:
+            0 12px 35px rgba(50,20,80,0.06);
+    }
+
+
+    .about-box h2 {
+        font-size: 40px;
+
+        font-weight: 800;
+
+        color: #21182b;
+    }
+
+
+    .about-box p {
+        color: #746b7d;
+
+        line-height: 1.8;
+    }
+
+
+    .about-feature {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 17px;
+
+        color: #51495b;
+
+        font-weight: 600;
+    }
+
+
+    .about-feature i {
+        color: #7c3aed;
+
+        font-size: 18px;
+    }
+
+
+    /* ==============================
+       CTA
+    ============================== */
+
+    .home-cta {
+        padding: 80px 20px;
+
+        text-align: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #7c3aed,
+                #6d28d9,
+                #9333ea
+            );
+
+        color: white;
+    }
+
+
+    .home-cta h2 {
+        font-size: 40px;
+
+        font-weight: 800;
+    }
+
+
+    .home-cta p {
+        margin: 15px 0 30px;
+
+        opacity: 0.9;
+    }
+
+
+    .cta-button {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 13px 25px;
+
+        border-radius: 9px;
+
+        background: white;
+
+        color: #6d28d9;
+
+        text-decoration: none;
+
+        font-weight: 700;
+
+        transition: 0.3s;
+    }
+
+
+    .cta-button:hover {
+        color: #5b21b6;
+
+        transform: translateY(-3px);
+    }
+
+
+    /* ==============================
+       RESPONSIVE
+    ============================== */
+
+    @media (max-width: 991px) {
+
+        .dsa-hero {
+            padding: 75px 0 55px;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8f9fc;
-            color: #172033;
+        .hero-content {
+            text-align: center;
         }
 
-        /* Navbar */
-
-        .navbar {
-            background: white;
-            padding: 18px 0;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-        }
-   .logo-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-
-.navbar-logo {
-    width: 55px;
-    height: 55px;
-    object-fit: contain;
-    display: block;
-    border-radius: 8px;
-}
-
-        .brand {
-            font-size: 27px;
-            font-weight: 800;
-            color: #4f46e5;
+        .hero-title,
+        .hero-description {
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .brand span {
-            color: #111827;
+        .hero-buttons,
+        .hero-features {
+            justify-content: center;
         }
 
-        .nav-link {
-            font-weight: 600;
-            margin-left: 20px;
-            color: #374151 !important;
+        .stats-row {
+            grid-template-columns:
+                repeat(2, 1fr);
         }
 
-        .nav-link:hover {
-            color: #4f46e5 !important;
+    }
+
+
+    @media (max-width: 576px) {
+
+        .dsa-hero {
+            padding: 60px 0 40px;
         }
 
-        .login-btn {
-            border: 1px solid #4f46e5;
-            color: #4f46e5;
-            border-radius: 8px;
-            padding: 9px 18px;
-            font-weight: 600;
+        .hero-title {
+            font-size: 40px;
+            letter-spacing: -1px;
         }
 
-        .login-btn:hover {
-            background: #4f46e5;
-            color: white;
-        }
-
-        /* Hero */
-
-        .hero {
-            padding: 100px 0;
-            background:
-                linear-gradient(135deg, #eef2ff, #ffffff);
-        }
-
-        .hero h1 {
-            font-size: 58px;
-            font-weight: 800;
-            line-height: 1.15;
-        }
-
-        .hero h1 span {
-            color: #4f46e5;
-        }
-
-        .hero p {
-            font-size: 19px;
-            color: #667085;
-            margin-top: 20px;
-            line-height: 1.7;
+        .hero-description {
+            font-size: 15px;
         }
 
         .hero-buttons {
-            margin-top: 30px;
-        }
-        .hero-image-wrapper {
-    width: 85%;
-    margin: 0 auto;
-    background: white;
-    padding: 6px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.10);
-    overflow: hidden;
-}
-
-.hero-image {
-    width: 100%;
-    height: 330px;
-    object-fit: contain;
-    display: block;
-    border-radius: 15px;
-}
-
-        .primary-btn {
-            background: #4f46e5;
-            color: white;
-            padding: 13px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            display: inline-block;
-            margin-right: 10px;
+            flex-direction: column;
         }
 
-        .primary-btn:hover {
-            background: #3730a3;
-            color: white;
+        .hero-primary,
+        .hero-secondary {
+            width: 100%;
         }
 
-        .secondary-btn {
-            border: 1px solid #d1d5db;
-            color: #374151;
-            padding: 13px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .hero-card {
-            background: white;
-            border-radius: 25px;
-            padding: 45px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-
-        .hero-icon {
-            width: 130px;
-            height: 130px;
-            background: #eef2ff;
-            color: #4f46e5;
-            border-radius: 50%;
-            display: flex;
+        .hero-features {
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            font-size: 65px;
-            margin: auto;
+            gap: 12px;
         }
 
-        /* Stats */
-
-        .stats {
-            margin-top: -45px;
-            position: relative;
+        .stats-row {
+            grid-template-columns: 1fr;
         }
 
-        .stat-box {
-            background: white;
-            padding: 28px;
-            text-align: center;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+        .home-section {
+            padding: 65px 0;
         }
 
-        .stat-box h2 {
-            color: #4f46e5;
-            font-weight: 800;
+        .section-heading h2,
+        .about-box h2,
+        .home-cta h2 {
+            font-size: 32px;
         }
-
-        .stat-box p {
-            color: #667085;
-            margin: 0;
-        }
-
-        /* Sections */
-
-        .section {
-            padding: 90px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-title h2 {
-            font-size: 40px;
-            font-weight: 800;
-        }
-
-        .section-title p {
-            color: #667085;
-            margin-top: 12px;
-        }
-
-        /* Courses */
-
-        .course-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            height: 100%;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-            transition: 0.3s;
-        }
-
-        .course-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 18px 35px rgba(0,0,0,0.1);
-        }
-
-        .course-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: #eef2ff;
-            color: #4f46e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .course-card h4 {
-            font-weight: 700;
-        }
-
-        .course-card p {
-            color: #667085;
-            line-height: 1.6;
-        }
-
-        .course-link {
-            color: #4f46e5;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        /* About */
 
         .about-box {
-            background: white;
-            border-radius: 20px;
-            padding: 45px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+            padding: 30px;
         }
 
-        .about-box h2 {
-            font-size: 40px;
-            font-weight: 800;
-        }
-
-        .about-box p {
-            color: #667085;
-            line-height: 1.8;
-        }
-
-        .feature {
-            margin-top: 18px;
-            font-weight: 600;
-        }
-
-        .feature i {
-            color: #4f46e5;
-            margin-right: 10px;
-        }
-
-        /* CTA */
-
-        .cta {
-            background: #4f46e5;
-            color: white;
-            padding: 70px 20px;
-            text-align: center;
-        }
-
-        .cta h2 {
-            font-size: 40px;
-            font-weight: 800;
-        }
-
-        .cta p {
-            opacity: 0.9;
-            margin: 15px 0 30px;
-        }
-
-        .cta-btn {
-            background: white;
-            color: #4f46e5;
-            padding: 13px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        /* Footer */
-
-        footer {
-            background: #111827;
-            color: white;
-            padding: 55px 0 25px;
-        }
-
-        footer p {
-            color: #9ca3af;
-            line-height: 1.7;
-        }
-
-        footer a {
-            color: #9ca3af;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        footer a:hover {
-            color: white;
-        }
-
-        .copyright {
-            border-top: 1px solid #374151;
-            margin-top: 35px;
-            padding-top: 20px;
-            text-align: center;
-            color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-
-            .hero {
-                padding: 60px 0;
-            }
-
-            .hero h1 {
-                font-size: 40px;
-            }
-
-            .hero-card {
-                margin-top: 40px;
-            }
-
-            .section-title h2 {
-                font-size: 32px;
-            }
-
-        }
-        @media (max-width: 576px) {
-
-    .navbar-logo {
-        width: 125px;
-        height: 48px;
     }
 
-}
+</style>
 
-    </style>
-
-</head>
-
-<body>
+{% endblock %}
 
 
-<!-- NAVBAR -->
 
-<nav class="navbar navbar-expand-lg sticky-top">
+{% block content %}
 
-    <div class="container">
-
-        <a href="{% url 'home' %}" class="brand">
-    <img src="{% static 'website/images/dsa-logo.jpeg' %}"
-         alt="DSA Digital Skills Academy"
-         class="navbar-logo">
-</a>
-        
-
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu">
-
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarMenu">
-
-            <ul class="navbar-nav ms-auto align-items-lg-center">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{% url 'courses' %}" class="primary-btn">Courses</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
-                </li>
-
-                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                    <a href="{% url 'student_login' %}" class="login-btn">
-                        Student Login
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-</nav>
+<div class="home-page">
 
 
-<!-- HERO -->
+    <!-- =========================
+         HERO
+    ========================== -->
 
-<section class="hero">
+    <section class="dsa-hero">
 
-    <div class="container">
+        <div class="hero-grid"></div>
 
-        <div class="row align-items-center g-5">
+        <div class="hero-glow"></div>
 
-            <!-- LEFT CONTENT -->
-            <div class="col-lg-6">
 
-                <span class="badge text-bg-light px-3 py-2 mb-3">
-                    🎓 DSA Digital Skills Academy
-                </span>
+        <div class="container position-relative">
 
-                <h1>
+            <div class="hero-content">
+
+                <div class="hero-badge">
+
+                    <span class="badge-dot"></span>
+
+                    DSA Digital Skills Academy
+
+                </div>
+
+
+                <h1 class="hero-title">
+
                     Build Your Skills.
-                    <span>Build Your Future.</span>
+
+                    <span>
+                        Build Your Future.
+                    </span>
+
                 </h1>
 
-                <p>
-                    Learn academic and digital skills through
-                    practical learning, experienced teaching,
+
+                <p class="hero-description">
+
+                    Learn modern digital, academic and AI skills
+                    through practical learning, experienced teaching
                     and personal guidance.
+
                 </p>
+
 
                 <div class="hero-buttons">
 
-                    <a href="{% url 'courses' %}" class="primary-btn">
-                        Explore Courses
-                    </a>
-
-                    <a href="#about" class="secondary-btn">
-                        Learn More
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- RIGHT IMAGE -->
-            <div class="col-lg-6">
-
-                <div class="hero-image-wrapper">
-
-                    <img
-                        src="{% static 'website/images/dsa-hero.png' %}"
-                        alt="DSA Digital Skills Academy"
-                        class="hero-image"
+                    <a
+                        href="{% url 'courses' %}"
+                        class="hero-primary"
                     >
 
-                </div>
+                        <i class="bi bi-arrow-right-circle"></i>
 
-            </div>
+                        Explore Courses
 
-        </div>
-
-    </div>
-
-</section>
-
-<!-- STATS -->
-{% comment %} 
-<section class="stats">
-
-    <div class="container">
-
-        <div class="row g-3">
-
-            <div class="col-md-3">
-
-                <div class="stat-box">
-
-                    <h2>500+</h2>
-                    <p>Students</p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <div class="stat-box">
-
-                    <h2>20+</h2>
-                    <p>Courses</p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <div class="stat-box">
-
-                    <h2>10+</h2>
-                    <p>Instructors</p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <div class="stat-box">
-
-                    <h2>95%</h2>
-                    <p>Student Satisfaction</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section> {% endcomment %}
+                    </a>
 
 
-<!-- COURSES -->
+                    <a
+                        href="{% url 'contact' %}"
+                        class="hero-secondary"
+                    >
 
-<section class="section" id="courses">
+                        <i class="bi bi-chat-dots"></i>
 
-    <div class="container">
+                        Contact Us
 
-        <div class="section-title">
-
-            <h2>Our Courses</h2>
-
-            <p>
-                Learn academic and digital skills through practical learning,
-                experienced teaching, and personal guidance.
-            </p>
-
-        </div>
-
-
-        <div class="row g-4">
-
-
-            <!-- AI Tools & AI Training -->
-            <div class="col-md-6 col-lg-4">
-
-                <div class="course-card">
-
-                    <div class="course-icon">
-                        <i class="bi bi-robot"></i>
-                    </div>
-
-                    <h4>AI Tools & AI Training</h4>
-
-                    <p>
-                        Learn ChatGPT, Gemini, Claude, Canva AI,
-                        prompt engineering and practical AI skills.
-                    </p>
-
-                    <a href="{% url 'course_detail' 'ai-tools-ai-training' %}"
-                       class="primary-btn">
-                        View Course →
                     </a>
 
                 </div>
 
-            </div>
 
+                <div class="hero-features">
 
-            <!-- MS Office -->
-            <div class="col-md-6 col-lg-4">
+                    <div class="hero-feature">
 
-                <div class="course-card">
+                        <i class="bi bi-check-circle-fill"></i>
 
-                    <div class="course-icon">
-                        <i class="bi bi-file-earmark-text-fill"></i>
+                        Practical Learning
+
                     </div>
 
-                    <h4>MS Office</h4>
 
-                    <p>
-                        Master Microsoft Word, Excel and PowerPoint
-                        for academic, office and professional work.
-                    </p>
+                    <div class="hero-feature">
 
-                    <a href="{% url 'course_detail' 'ms-office' %}"
-                       class="primary-btn">
-                        View Course →
-                    </a>
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Experienced Teaching
+
+                    </div>
+
+
+                    <div class="hero-feature">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Online + Physical
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <!-- Graphic Designing -->
-            <div class="col-md-6 col-lg-4">
+            <!-- STATS -->
 
-                <div class="course-card">
-
-                    <div class="course-icon">
-                        <i class="bi bi-palette-fill"></i>
-                    </div>
-
-                    <h4>Graphic Designing</h4>
-
-                    <p>
-                        Learn Canva, design principles, posters,
-                        social media designs, logos and branding.
-                    </p>
-
-                    <a href="{% url 'course_detail' 'graphic-designing' %}"
-                       class="primary-btn">
-                        View Course →
-                    </a>
-
-                </div>
-
-            </div>
+            <div class="stats-row">
 
 
-            <!-- Video Editing -->
-            <div class="col-md-6 col-lg-4">
+                <div class="stat-card">
 
-                <div class="course-card">
+                    <div class="stat-icon">
 
-                    <div class="course-icon">
-                        <i class="bi bi-camera-reels-fill"></i>
-                    </div>
-
-                    <h4>Video Editing</h4>
-
-                    <p>
-                        Learn video editing, transitions, effects,
-                        reels, presentations and content creation.
-                    </p>
-
-                    <a href="{% url 'course_detail' 'video-editing' %}"
-                       class="primary-btn">
-                        View Course →
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- Spoken English -->
-            <div class="col-md-6 col-lg-4">
-
-                <div class="course-card">
-
-                    <div class="course-icon">
-                        <i class="bi bi-chat-dots-fill"></i>
-                    </div>
-
-                    <h4>Spoken English</h4>
-
-                    <p>
-                        Improve English speaking, vocabulary,
-                        communication and everyday conversation skills.
-                    </p>
-
-                    <a href="{% url 'course_detail' 'spoken-english' %}"
-                       class="primary-btn">
-                        View Course →
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- Academic Classes -->
-            <div class="col-md-6 col-lg-4">
-
-                <div class="course-card">
-
-                    <div class="course-icon">
-                        <i class="bi bi-book-fill"></i>
-                    </div>
-
-                    <h4>Python With Django</h4>
-
-                    <p>
-                        Learn Python programming and Django to build powerful, dynamic and real-world web applications.
-                    </p>
-
-                    <a href="{% url 'course_detail' 'python-django-development-course' %}"
-                       class="primary-btn">
-                        View Course →
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- Website Development -->
-<div class="col-md-6 col-lg-4">
-
-    <div class="course-card">
-
-        <div class="course-icon">
-            <i class="bi bi-code-slash"></i>
-        </div>
-
-        <h4>Website Development</h4>
-
-        <p>
-            Learn HTML, CSS, JavaScript and modern web development
-            to create responsive and professional websites.
-        </p>
-
-        <a href="{% url 'course_detail' 'web-development' %}"
-           class="primary-btn">
-            View Course →
-        </a>
-
-    </div>
-
-</div>
-
-
-            <!-- Tajweed Quran -->
-            <div class="col-md-6 col-lg-4">
-
-                <div class="course-card">
-
-                    <div class="course-icon">
                         <i class="bi bi-book-half"></i>
+
                     </div>
 
-                    <h4>Tajweed Quran</h4>
+                    <div>
 
-                    <p>
-                        Learn Quran reading with proper pronunciation,
-                        Tajweed rules and guided practice.
-                    </p>
+                        <h3>9+</h3>
 
-                    <a href="{% url 'course_detail' 'tajweed-quran' %}"
-                       class="primary-btn">
-                        View Course →
-                    </a>
+                        <p>Professional Courses</p>
+
+                    </div>
 
                 </div>
 
-            </div>
 
+                <div class="stat-card">
 
-        </div>
+                    <div class="stat-icon">
 
-    </div>
+                        <i class="bi bi-laptop"></i>
 
-</section>
+                    </div>
 
-<!-- ABOUT -->
+                    <div>
 
-<section class="section bg-light" id="about">
+                        <h3>100%</h3>
 
-    <div class="container">
+                        <p>Practical Learning</p>
 
-        <div class="about-box">
-
-            <div class="row align-items-center">
-
-                <div class="col-lg-6">
-
-                    <h2>
-                        Why Choose DSA?
-                    </h2>
-
-                    <p class="mt-3">
-                        Digital Skills Academy focuses on practical,
-                        career-oriented digital education. Our goal is
-                        to help learners develop useful skills through
-                        structured courses and hands-on learning.
-                    </p>
+                    </div>
 
                 </div>
 
 
-                <div class="col-lg-6">
+                <div class="stat-card">
 
-                    <div class="feature">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Practical project-based learning
+                    <div class="stat-icon">
+
+                        <i class="bi bi-globe2"></i>
+
                     </div>
 
-                    <div class="feature">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Beginner-friendly courses
-                    </div>
+                    <div>
 
-                    <div class="feature">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Professional instructors
-                    </div>
+                        <h3>Online +</h3>
 
-                    <div class="feature">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Career-focused digital skills
-                    </div>
+                        <p>Physical Classes</p>
 
-                    <div class="feature">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Certificate after course completion
                     </div>
 
                 </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-people-fill"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Beginner</h3>
+
+                        <p>Friendly Learning</p>
+
+                    </div>
+
+                </div>
+
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
-<!-- CTA -->
 
-<section class="cta">
+    <!-- =========================
+         COURSES
+    ========================== -->
 
-    <div class="container">
+    <section class="home-section" id="courses">
 
-        <h2>Ready to Start Learning?</h2>
+        <div class="container">
 
-        <p>
-            Join DSA and start building your digital skills today.
-        </p>
+            <div class="section-heading">
 
-        <a href="{% url 'register_student' %}" class="cta-btn">
-            Join DSA Academy
-        </a>
+                <h2>Our Courses</h2>
 
-    </div>
+                <p>
 
-</section>
+                    Learn academic and digital skills through
+                    practical learning, experienced teaching,
+                    and personal guidance.
 
-
-<!-- FOOTER -->
-
-<footer id="contact">
-
-    <div class="container">
-
-        <div class="row g-4">
-
-            <div class="col-lg-5">
-
-                <h3 class="fw-bold">
-                    DSA.
-                </h3>
-
-                <p class="mt-3">
-                    Digital Skills Academy — empowering learners
-                    with practical digital skills for the future.
                 </p>
 
             </div>
 
 
-            <div class="col-lg-3">
+            <div class="row g-4">
 
-                <h5>Quick Links</h5>
 
-                <div class="mt-3">
+                <!-- AI -->
 
-                    <a href="#">Home</a>
-                    <a href="#courses">Courses</a>
-                    <a href="#about">About</a>
-                    <a href="{% url 'contact' %}">Contact</a>
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-robot"></i>
+
+                        </div>
+
+                        <h4>
+                            Artificial Intelligence
+                        </h4>
+
+                        <p>
+
+                            Learn ChatGPT, Gemini, Claude,
+                            Canva AI, prompt engineering
+                            and practical AI skills.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'ai-tools-ai-training' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
 
                 </div>
 
+
+
+                <!-- WEBSITE -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-code-slash"></i>
+
+                        </div>
+
+                        <h4>
+                            Website Development
+                        </h4>
+
+                        <p>
+
+                            Learn HTML, CSS, JavaScript
+                            and modern web development
+                            to create professional websites.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'web-development' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PYTHON -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-filetype-py"></i>
+
+                        </div>
+
+                        <h4>
+                            Python & Django
+                        </h4>
+
+                        <p>
+
+                            Learn Python programming and Django
+                            to build powerful real-world
+                            web applications.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'python-django-development' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MS OFFICE -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-file-earmark-text-fill"></i>
+
+                        </div>
+
+                        <h4>
+                            MS Office
+                        </h4>
+
+                        <p>
+
+                            Master Microsoft Word, Excel
+                            and PowerPoint for academic,
+                            office and professional work.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'ms-office' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- GRAPHIC DESIGN -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-palette-fill"></i>
+
+                        </div>
+
+                        <h4>
+                            Graphic Designing
+                        </h4>
+
+                        <p>
+
+                            Learn Canva, design principles,
+                            posters, social media designs,
+                            logos and branding.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'graphic-designing' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- VIDEO -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-camera-reels-fill"></i>
+
+                        </div>
+
+                        <h4>
+                            Video Editing
+                        </h4>
+
+                        <p>
+
+                            Learn video editing, transitions,
+                            effects, reels, presentations
+                            and content creation.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'video-editing' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SPOKEN ENGLISH -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-chat-dots-fill"></i>
+
+                        </div>
+
+                        <h4>
+                            Spoken English
+                        </h4>
+
+                        <p>
+
+                            Improve English speaking,
+                            vocabulary, communication
+                            and everyday conversation.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'spoken-english' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ACADEMIC -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-mortarboard-fill"></i>
+
+                        </div>
+
+                        <h4>
+                            Academic Classes
+                        </h4>
+
+                        <p>
+
+                            Academic support from Nursery
+                            to Intermediate with focused
+                            learning and personal guidance.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'academic-classes' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TAJWEED -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="course-card">
+
+                        <div class="course-icon">
+
+                            <i class="bi bi-book-half"></i>
+
+                        </div>
+
+                        <h4>
+                            Tajweed Quran
+                        </h4>
+
+                        <p>
+
+                            Learn Quran reading with proper
+                            pronunciation, Tajweed rules
+                            and guided practice.
+
+                        </p>
+
+                        <a
+                            href="{% url 'course_detail' 'tajweed-quran' %}"
+                            class="course-btn"
+                        >
+
+                            View Course
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
             </div>
 
+        </div>
 
-            <div class="col-lg-4">
+    </section>
 
-                <h5>Contact</h5>
 
-                <div class="mt-3">
 
-                    <p>
-                        <i class="bi bi-envelope me-2"></i>
-                        info@dsaacademy.com
-                    </p>
+    <!-- =========================
+         ABOUT
+    ========================== -->
 
-                    <p>
-                        <i class="bi bi-telephone me-2"></i>
-                        +92 300 0000000
-                    </p>
+    <section class="home-section about-section">
 
-                    <p>
-                        <i class="bi bi-geo-alt me-2"></i>
-                        Pakistan
-                    </p>
+        <div class="container">
+
+            <div class="about-box">
+
+                <div class="row align-items-center g-5">
+
+
+                    <div class="col-lg-6">
+
+                        <h2>
+                            Why Choose DSA?
+                        </h2>
+
+                        <p class="mt-3">
+
+                            DSA Digital Skills Academy provides
+                            practical digital, academic and
+                            AI-focused education in a supportive
+                            learning environment.
+
+                            Our goal is to help students and
+                            beginners build useful skills
+                            for education, careers and the future.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-lg-6">
+
+                        <div class="about-feature">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Practical project-based learning
+
+                        </div>
+
+
+                        <div class="about-feature">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Beginner-friendly courses
+
+                        </div>
+
+
+                        <div class="about-feature">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Experienced teaching
+
+                        </div>
+
+
+                        <div class="about-feature">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Online + physical classes
+
+                        </div>
+
+
+                        <div class="about-feature">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Personal guidance
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -950,22 +1428,45 @@
 
         </div>
 
+    </section>
 
-        <div class="copyright">
 
-            © 2026 DSA Digital Skills Academy.
-            All Rights Reserved.
+
+    <!-- =========================
+         CTA
+    ========================== -->
+
+    <section class="home-cta">
+
+        <div class="container">
+
+            <h2>
+                Ready to Start Learning?
+            </h2>
+
+            <p>
+
+                Join DSA and start building
+                your skills for the future.
+
+            </p>
+
+            <a
+                href="{% url 'register_student' %}"
+                class="cta-button"
+            >
+
+                Join DSA Academy
+
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
 
         </div>
 
-    </div>
-
-</footer>
+    </section>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
-</script>
+</div>
 
-</body>
-
-</html>
+{% endblock %}

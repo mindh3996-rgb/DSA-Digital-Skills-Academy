@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import StudentProfile, Course
+from .models import StudentProfile, Course, Lecture, Assignment
 
 
 @admin.register(StudentProfile)
@@ -41,3 +41,59 @@ class CourseAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",)
     }
+@admin.register(Lecture)
+class LectureAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "course",
+        "lecture_number",
+        "title",
+        "lecture_date",
+        "lecture_type",
+        "is_published",
+    )
+
+    list_filter = (
+        "course",
+        "lecture_type",
+        "is_published",
+    )
+
+    search_fields = (
+        "title",
+        "description",
+        "course__title",
+    )
+
+    ordering = (
+        "course",
+        "lecture_number",
+    )
+@admin.register(Assignment)
+class AssignmentAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "title",
+        "course",
+        "lecture",
+        "due_date",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "course",
+        "is_published",
+        "due_date",
+    )
+
+    search_fields = (
+        "title",
+        "description",
+        "course__title",
+        "lecture__title",
+    )
+
+    ordering = (
+        "-created_at",
+    )

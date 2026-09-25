@@ -1,285 +1,797 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "website/base.html" %}
 
-<head>
+{% block title %}
+{{ course.title }} | DSA Digital Skills Academy
+{% endblock %}
 
-    <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+{% block extra_css %}
 
-    <title>{{ course.title }} | DSA</title>
+<style>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    .course-detail-page {
+        background: #f5f7fb;
+        min-height: 100vh;
+    }
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    /* COURSE HEADER */
 
-    <style>
+    .course-header {
+        padding: 70px 0;
+        background: linear-gradient(
+            135deg,
+            #eef2ff,
+            #ffffff
+        );
+    }
 
-        body {
-            background: #f5f7fb;
-            font-family: Arial, sans-serif;
-        }
+    .course-header h1 {
+        font-size: 48px;
+        font-weight: 800;
+        color: #111827;
+    }
 
-        .navbar {
-            background: white;
-            padding: 17px 0;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
-        }
+    .course-header p {
+        color: #6b7280;
+        font-size: 18px;
+        line-height: 1.7;
+        max-width: 850px;
+    }
 
-        .brand {
-            font-size: 28px;
-            font-weight: 800;
-            color: #4f46e5;
-        }
+
+    /* COURSE BOX */
+
+    .course-box {
+        background: white;
+        padding: 35px;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        margin-top: -40px;
+        position: relative;
+    }
+
+
+    /* COURSE IMAGE */
+
+    .course-image {
+        width: 100%;
+        height: 520px;
+        object-fit: contain;
+        object-position: center;
+        background: #f8f5ff;
+        border-radius: 15px;
+        display: block;
+        padding: 5px;
+    }
+
+
+    .placeholder {
+        height: 300px;
+        background: #eef2ff;
+        border-radius: 15px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #4f46e5;
+        font-size: 90px;
+    }
+
+
+    /* COURSE META */
+
+    .meta {
+        padding: 18px;
+        background: #f8f9fc;
+        border-radius: 10px;
+        margin-bottom: 12px;
+    }
+
+
+    /* ENROLL */
+
+    .enroll-btn {
+        width: 100%;
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .enroll-btn:hover {
+        background: #3730a3;
+        color: white;
+    }
+
+
+    /* =========================
+       DAILY LECTURES
+    ========================= */
+
+    .lectures-section {
+        margin-top: 55px;
+    }
+
+
+    .section-heading {
+        margin-bottom: 25px;
+    }
+
+
+    .section-badge {
+        display: inline-block;
+        padding: 7px 13px;
+        background: #eef2ff;
+        color: #4f46e5;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .section-heading h2 {
+        margin-top: 12px;
+        font-size: 30px;
+        font-weight: 800;
+        color: #111827;
+    }
+
+
+    .section-heading p {
+        color: #6b7280;
+        margin-bottom: 0;
+    }
+
+
+    /* LECTURE CARD */
+
+    .lecture-card {
+        display: flex;
+        gap: 20px;
+        padding: 22px;
+        margin-bottom: 15px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
+
+
+    .lecture-card:hover {
+        transform: translateY(-3px);
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.07);
+
+        border-color: #c7d2fe;
+    }
+
+
+    /* NUMBER */
+
+    .lecture-number {
+        flex-shrink: 0;
+
+        width: 52px;
+        height: 52px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #eef2ff;
+        color: #4f46e5;
+
+        border-radius: 13px;
+
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+
+    /* CONTENT */
+
+    .lecture-content {
+        flex: 1;
+    }
+
+
+    .lecture-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 7px;
+    }
+
+
+    .lecture-type {
+        font-size: 12px;
+        font-weight: 700;
+        color: #4f46e5;
+    }
+
+
+    .live-label {
+        color: #dc2626;
+    }
+
+
+    .lecture-date {
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+
+    .lecture-content h4 {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+
+    .lecture-content p {
+        margin-top: 8px;
+        margin-bottom: 15px;
+        color: #6b7280;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+
+    /* BUTTONS */
+
+    .lecture-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+
+    .lecture-btn,
+    .notes-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+
+        padding: 9px 14px;
+
+        border-radius: 8px;
+
+        text-decoration: none;
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .lecture-btn {
+        background: #4f46e5;
+        color: white;
+    }
+
+
+    .lecture-btn:hover {
+        background: #3730a3;
+        color: white;
+    }
+
+
+    .live-btn {
+        background: #dc2626;
+    }
+
+
+    .live-btn:hover {
+        background: #b91c1c;
+    }
+
+
+    .notes-btn {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+
+    .notes-btn:hover {
+        background: #e5e7eb;
+        color: #111827;
+    }
+
+
+    .lecture-status {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 9px 14px;
+
+        background: #f9fafb;
+
+        border-radius: 8px;
+
+        color: #9ca3af;
+
+        font-size: 13px;
+    }
+
+
+    /* NO LECTURES */
+
+    .no-lectures {
+        padding: 45px 20px;
+
+        text-align: center;
+
+        background: #f8f9fc;
+
+        border-radius: 16px;
+
+        color: #6b7280;
+    }
+
+
+    .no-lectures i {
+        font-size: 40px;
+        color: #9ca3af;
+    }
+
+
+    .no-lectures h4 {
+        margin-top: 12px;
+        color: #374151;
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 768px) {
 
         .course-header {
-            padding: 70px 0;
-            background: linear-gradient(
-                135deg,
-                #eef2ff,
-                #ffffff
-            );
-        }
-
-        .course-header h1 {
-            font-size: 48px;
-            font-weight: 800;
-        }
-
-        .course-header p {
-            color: #6b7280;
-            font-size: 18px;
-            line-height: 1.7;
-        }
-
-        .course-box {
-            background: white;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            margin-top: -40px;
-            position: relative;
-        }
-
-        .course-image {
-    width: 100%;
-    height: 520px;
-    object-fit: contain;
-    object-position: center;
-    background: #f8f5ff;
-    border-radius: 15px;
-    display: block;
-    padding: 5px;
-}
-        .placeholder {
-            height: 300px;
-            background: #eef2ff;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4f46e5;
-            font-size: 90px;
-        }
-
-        .meta {
-            padding: 18px;
-            background: #f8f9fc;
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        .enroll-btn {
-            width: 100%;
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 700;
-            text-decoration: none;
-            display: block;
+            padding: 55px 0;
             text-align: center;
         }
 
-        .enroll-btn:hover {
-            background: #3730a3;
-            color: white;
+        .course-header h1 {
+            font-size: 38px;
         }
 
-    </style>
+        .course-header p {
+            font-size: 16px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-</head>
+        .course-box {
+            padding: 22px;
+            margin-top: -25px;
+        }
 
+        .course-image {
+            height: 350px;
+        }
 
-<body>
-
-
-<nav class="navbar">
-
-    <div class="container">
-
-        <a href="{% url 'home' %}"
-           class="text-decoration-none">
-
-            <span class="brand">
-                DSA.
-            </span>
-
-        </a>
-
-        <a href="{% url 'courses' %}"
-           class="btn btn-light">
-
-            <i class="bi bi-arrow-left"></i>
-            All Courses
-
-        </a>
-
-    </div>
-
-</nav>
+    }
 
 
-<section class="course-header">
+    @media (max-width: 576px) {
 
-    <div class="container">
+        .lecture-card {
+            gap: 13px;
+            padding: 16px;
+        }
 
-        <div class="row align-items-center">
 
-            <div class="col-lg-8">
+        .lecture-number {
+            width: 42px;
+            height: 42px;
+            font-size: 16px;
+        }
 
-                <span class="badge bg-primary mb-3">
-                    {{ course.level }}
-                </span>
 
-                <h1>
-                    {{ course.title }}
-                </h1>
+        .lecture-top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3px;
+        }
 
-                <p>
-                    {{ course.short_description }}
-                </p>
+
+        .lecture-content h4 {
+            font-size: 16px;
+        }
+
+
+        .lecture-actions {
+            flex-direction: column;
+        }
+
+
+        .lecture-btn,
+        .notes-btn,
+        .lecture-status {
+            width: 100%;
+            justify-content: center;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="course-detail-page">
+
+
+    <!-- COURSE HEADER -->
+
+    <section class="course-header">
+
+        <div class="container">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-10">
+
+                    <span class="badge bg-primary mb-3">
+                        {{ course.level }}
+                    </span>
+
+                    <h1>
+                        {{ course.title }}
+                    </h1>
+
+                    <p>
+                        {{ course.short_description }}
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
-<div class="container">
+    <!-- COURSE CONTENT -->
 
-    <div class="course-box">
+    <div class="container">
 
-        <div class="row g-5">
+        <div class="course-box">
+
+            <div class="row g-5">
 
 
-            <div class="col-lg-8">
+                <!-- LEFT -->
+
+                <div class="col-lg-8">
 
 
-                {% if course.image %}
+                    {% if course.image %}
 
-                    <img
-                        src="{{ course.image.url }}"
-                        class="course-image"
-                        alt="{{ course.title }}"
+                        <img
+                            src="{{ course.image.url }}"
+                            class="course-image"
+                            alt="{{ course.title }}"
+                        >
+
+                    {% else %}
+
+                        <div class="placeholder">
+
+                            <i class="bi bi-mortarboard-fill"></i>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <h2 class="mt-4 fw-bold">
+                        About This Course
+                    </h2>
+
+
+                    <p
+                        class="text-muted mt-3"
+                        style="line-height: 1.8;"
+                    >
+                        {{ course.description }}
+                    </p>
+
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <div class="col-lg-4">
+
+
+                    <div class="meta">
+
+                        <strong>
+                            <i class="bi bi-clock me-2"></i>
+                            Duration
+                        </strong>
+
+                        <div class="text-muted mt-1">
+                            {{ course.duration }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta">
+
+                        <strong>
+                            <i class="bi bi-bar-chart me-2"></i>
+                            Level
+                        </strong>
+
+                        <div class="text-muted mt-1">
+                            {{ course.level }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta">
+
+                        <strong>
+                            <i class="bi bi-cash me-2"></i>
+                            Course Fee
+                        </strong>
+
+                        <div class="text-muted mt-1">
+
+                            {% if course.price == 0 %}
+
+                                Free
+
+                            {% else %}
+
+                                Rs. {{ course.price }}
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'student_login' %}"
+                        class="enroll-btn mt-3"
                     >
 
-                {% else %}
+                        <i class="bi bi-person-plus me-2"></i>
 
-                    <div class="placeholder">
+                        Login to Enroll
 
-                        <i class="bi bi-mortarboard-fill"></i>
-
-                    </div>
-
-                {% endif %}
+                    </a>
 
 
-                <h2 class="mt-4 fw-bold">
-                    About This Course
-                </h2>
-
-                <p class="text-muted mt-3"
-                   style="line-height: 1.8;">
-
-                    {{ course.description }}
-
-                </p>
-
+                </div>
 
             </div>
 
 
-            <div class="col-lg-4">
+            <!-- =========================
+                 DAILY LECTURES
+            ========================= -->
 
+            <div class="lectures-section">
 
-                <div class="meta">
+                <div class="section-heading">
 
-                    <strong>
-                        <i class="bi bi-clock me-2"></i>
-                        Duration
-                    </strong>
+                    <span class="section-badge">
+                        📚 Course Learning
+                    </span>
 
-                    <div class="text-muted mt-1">
-                        {{ course.duration }}
-                    </div>
+                    <h2>
+                        Daily Lectures
+                    </h2>
 
-                </div>
-
-
-                <div class="meta">
-
-                    <strong>
-                        <i class="bi bi-bar-chart me-2"></i>
-                        Level
-                    </strong>
-
-                    <div class="text-muted mt-1">
-                        {{ course.level }}
-                    </div>
+                    <p>
+                        Follow your course lectures step by step
+                        and continue your learning journey.
+                    </p>
 
                 </div>
 
 
-                <div class="meta">
+                <div class="lectures-list">
 
-                    <strong>
-                        <i class="bi bi-cash me-2"></i>
-                        Course Fee
-                    </strong>
 
-                    <div class="text-muted mt-1">
+                    {% for lecture in course.lectures.all %}
 
-                        {% if course.price == 0 %}
-                            Free
-                        {% else %}
-                            Rs. {{ course.price }}
+
+                        {% if lecture.is_published %}
+
+
+                            <div class="lecture-card">
+<a
+    href="{% url 'assignments' course.slug %}"
+    class="btn btn-primary">
+    <i class="bi bi-journal-text"></i>
+    View Assignments
+</a>
+
+                                <!-- NUMBER -->
+
+                                <div class="lecture-number">
+                                    {{ lecture.lecture_number }}
+                                </div>
+
+
+                                <!-- CONTENT -->
+
+                                <div class="lecture-content">
+
+
+                                    <div class="lecture-top">
+
+
+                                        {% if lecture.lecture_type == "live" %}
+
+                                            <span class="lecture-type live-label">
+                                                🔴 Live Lecture
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="lecture-type">
+                                                ▶ Recorded Lecture
+                                            </span>
+
+                                        {% endif %}
+
+
+                                        <span class="lecture-date">
+
+                                            {{ lecture.lecture_date|date:"d M Y" }}
+
+                                        </span>
+
+
+                                    </div>
+
+
+                                    <h4>
+                                        {{ lecture.title }}
+                                    </h4>
+
+
+                                    {% if lecture.description %}
+
+                                        <p>
+                                            {{ lecture.description }}
+                                        </p>
+
+                                    {% endif %}
+
+
+                                    <div class="lecture-actions">
+
+
+                                        {% if lecture.lecture_type == "live" %}
+
+
+                                            {% if lecture.live_url %}
+
+                                                <a
+                                                    href="{{ lecture.live_url }}"
+                                                    target="_blank"
+                                                    class="lecture-btn live-btn"
+                                                >
+
+                                                    <i class="bi bi-camera-video"></i>
+
+                                                    Join Live Lecture
+
+                                                </a>
+
+                                            {% else %}
+
+                                                <span class="lecture-status">
+
+                                                    Live link will be available soon
+
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        {% else %}
+
+
+                                            {% if lecture.video_url %}
+
+                                                <a
+                                                    href="{% url 'lecture_detail' course.slug lecture.id %}"
+                                                    class="lecture-btn"
+                                                >
+
+                                                    <i class="bi bi-play-circle"></i>
+
+                                                    Watch Lecture
+
+                                                </a>
+
+                                            {% else %}
+
+                                                <span class="lecture-status">
+
+                                                    Recorded video will be available soon
+
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        {% endif %}
+
+
+                                        {% if lecture.notes %}
+
+                                            <a
+                                                href="{{ lecture.notes.url }}"
+                                                target="_blank"
+                                                class="notes-btn"
+                                            >
+
+                                                <i class="bi bi-file-earmark-text"></i>
+
+                                                Lecture Notes
+
+                                            </a>
+
+                                        {% endif %}
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
                         {% endif %}
 
-                    </div>
+
+                    {% empty %}
+
+
+                        <div class="no-lectures">
+
+                            <i class="bi bi-journal-x"></i>
+
+                            <h4>
+                                No lectures available yet
+                            </h4>
+
+                            <p>
+                                New lectures will be added soon.
+                            </p>
+
+                        </div>
+
+
+                    {% endfor %}
+
 
                 </div>
 
-
-                <a href="{% url 'student_login' %}"
-                   class="enroll-btn mt-3">
-
-                    <i class="bi bi-person-plus me-2"></i>
-
-                    Login to Enroll
-
-                </a>
-
-
             </div>
-
 
         </div>
 
@@ -287,7 +799,4 @@
 
 </div>
 
-
-</body>
-
-</html>
+{% endblock %}

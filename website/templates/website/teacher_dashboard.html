@@ -1,0 +1,1133 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+Teacher Dashboard | DSA Digital Skills Academy
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    body {
+        background: #f6f7fb;
+    }
+
+    .teacher-layout {
+        display: flex;
+        min-height: calc(100vh - 80px);
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .teacher-sidebar {
+        width: 250px;
+        background: #24133f;
+        color: white;
+        padding: 25px 15px;
+        flex-shrink: 0;
+    }
+
+    .teacher-brand {
+        text-align: center;
+        padding: 10px 5px 25px;
+        border-bottom: 1px solid rgba(255,255,255,.12);
+        margin-bottom: 20px;
+    }
+
+    .teacher-brand-icon {
+        width: 55px;
+        height: 55px;
+        background: #ffffff;
+        color: #6f42c1;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        font-size: 25px;
+    }
+
+    .teacher-brand h5 {
+        margin-top: 12px;
+        margin-bottom: 3px;
+        font-weight: 700;
+    }
+
+    .teacher-brand small {
+        color: #c9bce0;
+    }
+
+    .sidebar-section {
+        color: #9f8abf;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 20px 12px 8px;
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 5px;
+        border-radius: 10px;
+        color: #ddd4ea;
+        text-decoration: none;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+    .sidebar-link i {
+        font-size: 17px;
+        width: 20px;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+        background: #6f42c1;
+        color: white;
+    }
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    .teacher-main {
+        flex: 1;
+        padding: 30px;
+        min-width: 0;
+    }
+
+    .dashboard-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+        gap: 20px;
+    }
+
+    .dashboard-heading h2 {
+        font-weight: 800;
+        color: #24133f;
+        margin-bottom: 5px;
+    }
+
+    .dashboard-heading p {
+        color: #777;
+        margin: 0;
+    }
+
+    .teacher-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: white;
+        padding: 8px 14px 8px 8px;
+        border-radius: 40px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .teacher-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #6f42c1;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .teacher-profile strong {
+        display: block;
+        color: #24133f;
+        font-size: 14px;
+    }
+
+    .teacher-profile small {
+        color: #888;
+    }
+
+    /* =========================
+       STAT CARDS
+    ========================= */
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border: 1px solid #eeeaf4;
+    }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0eaff;
+        color: #6f42c1;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    .stat-card:nth-child(2) .stat-icon {
+        background: #e9f7ef;
+        color: #198754;
+    }
+
+    .stat-card:nth-child(3) .stat-icon {
+        background: #fff3cd;
+        color: #b58105;
+    }
+
+    .stat-card:nth-child(4) .stat-icon {
+        background: #e7f1ff;
+        color: #0d6efd;
+    }
+
+    .stat-info h3 {
+        font-size: 25px;
+        margin: 0;
+        font-weight: 800;
+        color: #24133f;
+    }
+
+    .stat-info p {
+        margin: 3px 0 0;
+        color: #888;
+        font-size: 13px;
+    }
+
+    /* =========================
+       SECONDARY STATS
+    ========================= */
+
+    .secondary-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .secondary-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        border: 1px solid #eeeaf4;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .secondary-card-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .secondary-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: #f0eaff;
+        color: #6f42c1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+    }
+
+    .secondary-card h5 {
+        margin: 0;
+        color: #24133f;
+        font-weight: 700;
+    }
+
+    .secondary-card small {
+        color: #888;
+    }
+
+    .secondary-number {
+        font-size: 28px;
+        font-weight: 800;
+        color: #6f42c1;
+    }
+
+    /* =========================
+       QUICK ACTIONS
+    ========================= */
+
+    .section-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #eeeaf4;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .section-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #eeeaf4;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .section-header h5 {
+        margin: 0;
+        font-weight: 750;
+        color: #24133f;
+    }
+
+    .section-header small {
+        color: #888;
+    }
+
+    .quick-actions {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
+
+    .quick-action {
+        text-decoration: none;
+        border: 1px solid #eeeaf4;
+        border-radius: 13px;
+        padding: 18px;
+        text-align: center;
+        color: #24133f;
+        transition: .2s;
+    }
+
+    .quick-action:hover {
+        transform: translateY(-3px);
+        border-color: #6f42c1;
+        box-shadow: 0 7px 18px rgba(111,66,193,.12);
+        color: #6f42c1;
+    }
+
+    .quick-action i {
+        display: block;
+        font-size: 25px;
+        margin-bottom: 9px;
+        color: #6f42c1;
+    }
+
+    .quick-action strong {
+        font-size: 14px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .submission-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 850px;
+    }
+
+    .submission-table th {
+        background: #faf9fc;
+        color: #777;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        padding: 14px 18px;
+        border-bottom: 1px solid #eeeaf4;
+        white-space: nowrap;
+    }
+
+    .submission-table td {
+        padding: 15px 18px;
+        border-bottom: 1px solid #f0edf5;
+        color: #444;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    .submission-table tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .student-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .student-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #eee5ff;
+        color: #6f42c1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .student-cell strong {
+        display: block;
+        color: #24133f;
+    }
+
+    .student-cell small {
+        color: #999;
+    }
+
+    .status-badge {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-reviewed {
+        background: #dff5e8;
+        color: #198754;
+    }
+
+    .status-pending {
+        background: #fff0d6;
+        color: #b36b00;
+    }
+
+    .view-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+        background: #6f42c1;
+        color: white;
+        padding: 7px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .view-btn:hover {
+        background: #59339d;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 45px 20px;
+        color: #888;
+    }
+
+    .empty-state i {
+        font-size: 45px;
+        color: #c8b8df;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .quick-actions {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 850px) {
+
+        .teacher-layout {
+            display: block;
+        }
+
+        .teacher-sidebar {
+            width: 100%;
+        }
+
+        .teacher-brand {
+            display: none;
+        }
+
+        .sidebar-section {
+            display: none;
+        }
+
+        .teacher-sidebar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 12px;
+        }
+
+        .sidebar-link {
+            margin: 0;
+            padding: 9px 12px;
+        }
+
+        .teacher-main {
+            padding: 20px 15px;
+        }
+
+        .dashboard-top {
+            align-items: flex-start;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .secondary-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .quick-actions {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .dashboard-top {
+            display: block;
+        }
+
+        .teacher-profile {
+            margin-top: 15px;
+            width: fit-content;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="teacher-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="teacher-sidebar">
+
+        <div class="teacher-brand">
+
+            <div class="teacher-brand-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <h5>Teacher Panel</h5>
+
+            <small>DSA Digital Skills Academy</small>
+
+        </div>
+
+
+        <div class="sidebar-section">
+            Main
+        </div>
+
+        <a href="{% url 'teacher_dashboard' %}"
+           class="sidebar-link active">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <div class="sidebar-section">
+            Management
+        </div>
+
+    <a href="{% url 'teacher_students' %}" class="sidebar-link">
+
+    <i class="bi bi-people-fill"></i>
+
+    Students
+
+</a>
+
+        <a href="{% url 'teacher_courses' %}" class="sidebar-link">
+
+    <i class="bi bi-book-fill"></i>
+
+    Courses
+
+</a>
+
+
+<a href="{% url 'teacher_courses' %}"
+   class="sidebar-link">
+
+    <i class="bi bi-play-circle-fill"></i>
+
+    Lectures
+
+</a>
+
+    <a href="{% url 'teacher_courses' %}" class="sidebar-link">
+
+    <i class="bi bi-file-earmark-text-fill"></i>
+
+    Assignments
+
+</a>
+
+        <a href="{% url 'teacher_dashboard' %}"
+           class="sidebar-link">
+
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+
+            Submissions
+
+        </a>
+
+
+        <div class="sidebar-section">
+            Account
+        </div>
+
+        <a href="#" class="sidebar-link">
+
+            <i class="bi bi-person-circle"></i>
+
+            My Profile
+
+        </a>
+
+
+        <a href="{% url 'student_logout' %}"
+           class="sidebar-link">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            Logout
+
+        </a>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="teacher-main">
+
+
+        <!-- TOP HEADER -->
+
+        <div class="dashboard-top">
+
+            <div class="dashboard-heading">
+
+                <h2>Teacher Dashboard</h2>
+
+                <p>
+                    Manage your students, courses, lectures and assignments.
+                </p>
+
+            </div>
+
+
+            <div class="teacher-profile">
+
+                <div class="teacher-avatar">
+
+                    {{ request.user.username|first|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ request.user.get_full_name|default:request.user.username }}
+                    </strong>
+
+                    <small>
+                        Teacher / Administrator
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             MAIN STATISTICS
+        ========================= -->
+
+        <div class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ total_students }}
+                    </h3>
+
+                    <p>
+                        Total Students
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    <i class="bi bi-book-fill"></i>
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ total_courses }}
+                    </h3>
+
+                    <p>
+                        Total Courses
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    <i class="bi bi-play-circle-fill"></i>
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ total_lectures }}
+                    </h3>
+
+                    <p>
+                        Total Lectures
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    <i class="bi bi-file-earmark-text-fill"></i>
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ total_assignments }}
+                    </h3>
+
+                    <p>
+                        Total Assignments
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             SUBMISSION STATISTICS
+        ========================= -->
+
+        <div class="secondary-stats">
+
+
+            <div class="secondary-card">
+
+                <div class="secondary-card-left">
+
+                    <div class="secondary-icon">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+
+                    <div>
+
+                        <h5>
+                            Pending Reviews
+                        </h5>
+
+                        <small>
+                            Assignments waiting for review
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="secondary-number">
+                    {{ pending_submissions }}
+                </div>
+
+            </div>
+
+
+            <div class="secondary-card">
+
+                <div class="secondary-card-left">
+
+                    <div class="secondary-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+
+                    <div>
+
+                        <h5>
+                            Reviewed Submissions
+                        </h5>
+
+                        <small>
+                            Completed assignment reviews
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="secondary-number">
+                    {{ reviewed_submissions }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             QUICK ACTIONS
+        ========================= -->
+
+        <div class="section-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h5>
+                        Quick Management
+                    </h5>
+
+                    <small>
+                        Frequently used teacher actions
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <a href="{% url 'teacher_students' %}"
+   class="quick-action">
+
+    <i class="bi bi-person-plus-fill"></i>
+
+    <strong>
+        Manage Students
+    </strong>
+
+</a>
+
+                <a href="{% url 'teacher_courses' %}"
+   class="quick-action">
+
+    <i class="bi bi-book-fill"></i>
+
+    <strong>
+        Manage Courses
+    </strong>
+
+</a>
+
+
+    <a href="{% url 'teacher_courses' %}"
+   class="quick-action">
+
+    <i class="bi bi-camera-video-fill"></i>
+
+    <strong>
+        Manage Lectures
+    </strong>
+
+</a>
+
+    <a href="{% url 'teacher_courses' %}"
+   class="quick-action">
+
+    <i class="bi bi-file-earmark-plus-fill"></i>
+
+    <strong>
+        Manage Assignments
+    </strong>
+
+</a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             RECENT SUBMISSIONS
+        ========================= -->
+
+        <div class="section-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h5>
+                        Recent Submissions
+                    </h5>
+
+                    <small>
+                        Latest student assignment submissions
+                    </small>
+
+                </div>
+
+                <span class="badge bg-light text-dark">
+
+                    {{ total_submissions }} Total
+
+                </span>
+
+            </div>
+
+
+            {% if recent_submissions %}
+
+            <div class="table-wrapper">
+
+                <table class="submission-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Assignment
+                            </th>
+
+                            <th>
+                                Course
+                            </th>
+
+                            <th>
+                                Submitted
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for submission in recent_submissions %}
+
+                        <tr>
+
+                            <td>
+
+                                <div class="student-cell">
+
+                                    <div class="student-avatar">
+
+                                        {{ submission.student.username|first|upper }}
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            {{ submission.student.username }}
+                                        </strong>
+
+                                        <small>
+                                            {{ submission.student.email }}
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                {{ submission.assignment.title }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ submission.assignment.course.title }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ submission.submitted_at|date:"d M Y, h:i A" }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if submission.status == "reviewed" %}
+
+                                    <span class="status-badge status-reviewed">
+
+                                        <i class="bi bi-check-circle me-1"></i>
+
+                                        Reviewed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-pending">
+
+                                        <i class="bi bi-clock me-1"></i>
+
+                                        Pending
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <a href="{% url 'submission_detail' submission.id %}"
+                                   class="view-btn">
+
+                                    <i class="bi bi-eye"></i>
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <i class="bi bi-inbox"></i>
+
+                <h5>
+                    No submissions yet
+                </h5>
+
+                <p>
+                    Student assignment submissions will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

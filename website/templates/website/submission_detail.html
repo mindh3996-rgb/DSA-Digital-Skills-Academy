@@ -1,0 +1,766 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+Submission Review | DSA Digital Skills Academy
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .submission-wrapper {
+        background: #faf9fc;
+        min-height: 70vh;
+        padding: 50px 0;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #6d28d9;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+        color: #4c1d95;
+    }
+
+    .page-heading {
+        color: #24182f;
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 7px;
+    }
+
+    .page-description {
+        color: #777080;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .main-card {
+        background: white;
+        border: 1px solid #eee7f7;
+        border-radius: 20px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        padding: 25px;
+        border-bottom: 1px solid #eee7f7;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .assignment-title {
+        color: #24182f;
+        font-size: 21px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .course-name {
+        color: #7c3aed;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .status-submitted {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .status-reviewed {
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .card-body-custom {
+        padding: 25px;
+    }
+
+    .info-box {
+        background: #faf7ff;
+        border: 1px solid #eee7f7;
+        border-radius: 14px;
+        padding: 18px;
+        height: 100%;
+    }
+
+    .info-label {
+        color: #81798a;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: #24182f;
+        font-size: 14px;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+    .section-title {
+        color: #24182f;
+        font-size: 18px;
+        font-weight: 800;
+        margin: 30px 0 15px;
+    }
+
+    .comment-box {
+        background: #faf9fc;
+        border: 1px solid #eee7f7;
+        border-radius: 12px;
+        padding: 18px;
+        color: #4b4454;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .submission-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .submission-media-card {
+        background: #faf7ff;
+        border: 1px solid #eee7f7;
+        border-radius: 16px;
+        padding: 20px;
+    }
+
+    .media-heading {
+        color: #24182f;
+        font-size: 15px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    .image-preview {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        background: #f3f0f7;
+        border-radius: 12px;
+        border: 1px solid #eee7f7;
+        margin-bottom: 15px;
+    }
+
+    .video-preview {
+        width: 100%;
+        max-height: 400px;
+        border-radius: 12px;
+        background: #111;
+        margin-bottom: 15px;
+    }
+
+    .file-name {
+        color: #4b4454;
+        font-size: 12px;
+        font-weight: 600;
+        word-break: break-word;
+        margin-bottom: 12px;
+    }
+
+    .download-btn {
+        display: inline-flex;
+        align-items: center;
+        background: #7c3aed;
+        color: white;
+        text-decoration: none;
+        padding: 9px 15px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .download-btn:hover {
+        background: #6d28d9;
+        color: white;
+    }
+
+    .no-file {
+        color: #81798a;
+        font-size: 13px;
+        padding: 25px 5px;
+        text-align: center;
+    }
+
+    .review-card {
+        background: #ffffff;
+        border: 1px solid #ddd4ea;
+        border-radius: 16px;
+        padding: 22px;
+        margin-top: 25px;
+    }
+
+    .marks-box {
+        max-width: 220px;
+    }
+
+    .marks-input {
+        font-size: 20px;
+        font-weight: 800;
+        text-align: center;
+        border: 1px solid #ddd4ea;
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .marks-input:focus,
+    .feedback-textarea:focus {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+    }
+
+    .marks-label {
+        color: #24182f;
+        font-size: 14px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .marks-help {
+        color: #81798a;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .feedback-textarea {
+        min-height: 140px;
+        border: 1px solid #ddd4ea;
+        border-radius: 10px;
+        resize: vertical;
+    }
+
+    .review-btn {
+        background: #7c3aed;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 16px;
+        transition: 0.3s ease;
+    }
+
+    .review-btn:hover {
+        background: #6d28d9;
+        transform: translateY(-1px);
+    }
+
+    .existing-feedback {
+        background: #ecfdf5;
+        border: 1px solid #bbf7d0;
+        border-radius: 14px;
+        padding: 18px;
+        margin-top: 15px;
+    }
+
+    .existing-feedback-title {
+        color: #047857;
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 7px;
+    }
+
+    .existing-feedback-text {
+        color: #365a4b;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .current-marks {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #ede9fe;
+        color: #6d28d9;
+        padding: 7px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 800;
+        margin-top: 12px;
+    }
+
+    @media (max-width: 768px) {
+
+        .submission-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .page-heading {
+            font-size: 25px;
+        }
+
+        .card-body-custom,
+        .card-header-custom {
+            padding: 20px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="submission-wrapper">
+
+```
+<div class="container">
+
+    <!-- BACK -->
+
+    <a
+        href="{% url 'teacher_dashboard' %}"
+        class="back-link"
+    >
+        <i class="bi bi-arrow-left"></i>
+        Back to Teacher Dashboard
+    </a>
+
+
+    <!-- PAGE HEADING -->
+
+    <h1 class="page-heading">
+        Assignment Submission
+    </h1>
+
+    <p class="page-description">
+        Review the student's submitted work and provide marks and feedback.
+    </p>
+
+
+    <!-- MAIN CARD -->
+
+    <div class="main-card">
+
+        <!-- HEADER -->
+
+        <div class="card-header-custom">
+
+            <div>
+
+                <h2 class="assignment-title">
+                    {{ submission.assignment.title }}
+                </h2>
+
+                <div class="course-name">
+                    {{ submission.assignment.course.title }}
+                </div>
+
+                {% if submission.marks != None %}
+
+                    <div class="current-marks">
+                        <i class="bi bi-star-fill"></i>
+                        Current Marks: {{ submission.marks }}/100
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div>
+
+                {% if submission.status == "reviewed" %}
+
+                    <span class="status-badge status-reviewed">
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Reviewed
+
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge status-submitted">
+
+                        <i class="bi bi-clock me-1"></i>
+
+                        Submitted
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+
+            <!-- STUDENT INFO -->
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Student
+                        </div>
+
+                        <div class="info-value">
+                            {{ submission.student.username }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Email
+                        </div>
+
+                        <div class="info-value">
+
+                            {{ submission.student.email|default:"Not provided" }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Submitted At
+                        </div>
+
+                        <div class="info-value">
+
+                            {{ submission.submitted_at|date:"d M Y, h:i A" }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STUDENT COMMENT -->
+
+            <h3 class="section-title">
+                Student Comment
+            </h3>
+
+            <div class="comment-box">
+
+                {% if submission.student_comment %}
+
+                    {{ submission.student_comment }}
+
+                {% else %}
+
+                    <span class="text-muted">
+                        No comment was added by the student.
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- SUBMITTED WORK -->
+
+            <h3 class="section-title">
+                Submitted Work
+            </h3>
+
+
+            <div class="submission-grid">
+
+
+                <!-- PICTURE -->
+
+                <div class="submission-media-card">
+
+                    <div class="media-heading">
+
+                        <i class="bi bi-image me-2"></i>
+
+                        Assignment Picture
+
+                    </div>
+
+
+                    {% if submission.submission_image %}
+
+                        <img
+                            src="{{ submission.submission_image.url }}"
+                            alt="Student Assignment Picture"
+                            class="image-preview"
+                        >
+
+                        <div class="file-name">
+
+                            {{ submission.submission_image.name }}
+
+                        </div>
+
+                        <a
+                            href="{{ submission.submission_image.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="download-btn"
+                        >
+
+                            <i class="bi bi-eye me-1"></i>
+
+                            View Picture
+
+                        </a>
+
+                    {% else %}
+
+                        <div class="no-file">
+
+                            <i class="bi bi-image fs-3 d-block mb-2"></i>
+
+                            No assignment picture submitted.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- VIDEO -->
+
+                <div class="submission-media-card">
+
+                    <div class="media-heading">
+
+                        <i class="bi bi-camera-video me-2"></i>
+
+                        Assignment Video
+
+                    </div>
+
+
+                    {% if submission.submission_video %}
+
+                        <video
+                            controls
+                            class="video-preview"
+                        >
+
+                            <source
+                                src="{{ submission.submission_video.url }}"
+                                type="video/mp4"
+                            >
+
+                            Your browser does not support video playback.
+
+                        </video>
+
+
+                        <div class="file-name">
+
+                            {{ submission.submission_video.name }}
+
+                        </div>
+
+                        <a
+                            href="{{ submission.submission_video.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="download-btn"
+                        >
+
+                            <i class="bi bi-play-circle me-1"></i>
+
+                            Open Video
+
+                        </a>
+
+                    {% else %}
+
+                        <div class="no-file">
+
+                            <i class="bi bi-camera-video fs-3 d-block mb-2"></i>
+
+                            No assignment video submitted.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- EXISTING FEEDBACK -->
+
+            {% if submission.teacher_feedback %}
+
+                <h3 class="section-title">
+                    Current Teacher Feedback
+                </h3>
+
+                <div class="existing-feedback">
+
+                    <div class="existing-feedback-title">
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Feedback already provided
+
+                    </div>
+
+                    <p class="existing-feedback-text">
+
+                        {{ submission.teacher_feedback }}
+
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- REVIEW FORM -->
+
+            <h3 class="section-title">
+                Review Assignment
+            </h3>
+
+
+            <div class="review-card">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    <!-- MARKS -->
+
+                    <div class="marks-box mb-4">
+
+                        <label
+                            for="marks"
+                            class="marks-label"
+                        >
+
+                            <i class="bi bi-star me-1"></i>
+
+                            Marks
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="marks"
+                            id="marks"
+                            class="form-control marks-input"
+                            min="0"
+                            max="100"
+                            value="{% if submission.marks != None %}{{ submission.marks }}{% endif %}"
+                            placeholder="0"
+                        >
+
+                        <div class="marks-help">
+                            Enter marks between 0 and 100.
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEEDBACK -->
+
+                    <div>
+
+                        <label
+                            for="teacher_feedback"
+                            class="form-label fw-semibold"
+                        >
+
+                            <i class="bi bi-chat-left-text me-1"></i>
+
+                            Teacher Feedback
+
+                        </label>
+
+                        <textarea
+                            name="teacher_feedback"
+                            id="teacher_feedback"
+                            class="form-control feedback-textarea"
+                            placeholder="Write feedback for the student..."
+                        >{{ submission.teacher_feedback }}</textarea>
+
+                    </div>
+
+
+                    <!-- BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="review-btn"
+                    >
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Save Review & Mark as Reviewed
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

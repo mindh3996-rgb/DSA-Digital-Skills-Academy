@@ -1,0 +1,578 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+Students Management | DSA Digital Skills Academy
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    body {
+        background: #f6f7fb;
+    }
+
+    .students-page {
+        padding: 35px 0 50px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .page-title h2 {
+        color: #24133f;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .page-title p {
+        color: #777;
+        margin: 0;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        color: #6f42c1;
+        background: #f0eaff;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .back-btn:hover {
+        background: #6f42c1;
+        color: white;
+    }
+
+    /* Statistics */
+
+    .student-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid #eeeaf4;
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+    }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 13px;
+        background: #f0eaff;
+        color: #6f42c1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .stat-card h3 {
+        margin: 0;
+        font-weight: 800;
+        color: #24133f;
+    }
+
+    .stat-card p {
+        margin: 3px 0 0;
+        color: #888;
+        font-size: 13px;
+    }
+
+    /* Main Card */
+
+    .students-card {
+        background: white;
+        border-radius: 18px;
+        border: 1px solid #eeeaf4;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        overflow: hidden;
+    }
+
+    .students-card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #eeeaf4;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .students-card-header h5 {
+        margin: 0;
+        color: #24133f;
+        font-weight: 750;
+    }
+
+    .students-count {
+        background: #f0eaff;
+        color: #6f42c1;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .students-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    .students-table th {
+        background: #faf9fc;
+        padding: 14px 18px;
+        color: #777;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        border-bottom: 1px solid #eeeaf4;
+    }
+
+    .students-table td {
+        padding: 15px 18px;
+        border-bottom: 1px solid #f0edf5;
+        font-size: 14px;
+        color: #444;
+        vertical-align: middle;
+    }
+
+    .students-table tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .student-info {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .student-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #eee5ff;
+        color: #6f42c1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .student-name {
+        font-weight: 700;
+        color: #24133f;
+    }
+
+    .student-username {
+        font-size: 12px;
+        color: #999;
+    }
+
+    .profile-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #dff5e8;
+        color: #198754;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .view-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        background: #6f42c1;
+        color: white;
+        padding: 8px 13px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .view-btn:hover {
+        background: #59339d;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #888;
+    }
+
+    .empty-state i {
+        font-size: 50px;
+        color: #cbbde0;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 800px) {
+
+        .student-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .page-header {
+            align-items: flex-start;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .page-header {
+            display: block;
+        }
+
+        .back-btn {
+            margin-top: 15px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container students-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div class="page-title">
+
+            <h2>
+                Students Management
+            </h2>
+
+            <p>
+                View and manage all registered students.
+            </p>
+
+        </div>
+
+        <a href="{% url 'teacher_dashboard' %}"
+           class="back-btn">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Teacher Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="student-stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ students|length }}
+                </h3>
+
+                <p>
+                    Registered Students
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-person-check-fill"></i>
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ students|length }}
+                </h3>
+
+                <p>
+                    Active Student Accounts
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div>
+
+                <h3>
+                    DSA
+                </h3>
+
+                <p>
+                    Digital Skills Academy
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STUDENTS TABLE -->
+
+    <div class="students-card">
+
+        <div class="students-card-header">
+
+            <h5>
+                <i class="bi bi-people me-2"></i>
+                All Students
+            </h5>
+
+            <span class="students-count">
+                {{ students|length }} Students
+            </span>
+
+        </div>
+
+
+        {% if students %}
+
+        <div class="table-wrapper">
+
+            <table class="students-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            City
+                        </th>
+
+                        <th>
+                            Joined
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="student-info">
+
+                                <div class="student-avatar">
+
+                                    {{ student.username|first|upper }}
+
+                                </div>
+
+                                <div>
+
+                                    <div class="student-name">
+
+                                        {% if student.student_profile.full_name %}
+
+                                            {{ student.student_profile.full_name }}
+
+                                        {% else %}
+
+                                            {{ student.username }}
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="student-username">
+
+                                        @{{ student.username }}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if student.email %}
+
+                                {{ student.email }}
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    Not provided
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if student.student_profile.city %}
+
+                                {{ student.student_profile.city }}
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    Not provided
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ student.date_joined|date:"d M Y" }}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if student.is_active %}
+
+                                <span class="profile-status">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <a href="{% url 'teacher_student_detail' student.id %}"
+                               class="view-btn">
+
+                                <i class="bi bi-eye"></i>
+
+                                View Profile
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <i class="bi bi-people"></i>
+
+            <h5>
+                No Students Found
+            </h5>
+
+            <p>
+                Registered students will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

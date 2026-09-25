@@ -6,3 +6,9 @@ db.sqlite3
 media/
 staticfiles/
 .vscode/
+database_backup.json
+database_backup_utf8.json
+lecture_notes/
+assignments/
+assignment_submissions/
+courses/

@@ -1,0 +1,258 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+Assignments | {{ course.title }}
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .assignments-section {
+        padding: 70px 0;
+        background: #f8f7ff;
+        min-height: 70vh;
+    }
+
+    .assignments-header {
+        text-align: center;
+        margin-bottom: 45px;
+    }
+
+    .assignments-header h1 {
+        font-weight: 700;
+        color: #4b2aad;
+        margin-bottom: 10px;
+    }
+
+    .assignments-header p {
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .assignment-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 22px;
+        border: 1px solid #ece8ff;
+        box-shadow: 0 8px 25px rgba(75, 42, 173, 0.08);
+        transition: 0.3s;
+    }
+
+    .assignment-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(75, 42, 173, 0.14);
+    }
+
+    .assignment-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 14px;
+        background: #eee9ff;
+        color: #5b35c5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        margin-bottom: 18px;
+    }
+
+    .assignment-card h3 {
+        font-size: 21px;
+        font-weight: 700;
+        color: #252525;
+        margin-bottom: 10px;
+    }
+
+    .assignment-description {
+        color: #6b7280;
+        line-height: 1.7;
+        margin-bottom: 18px;
+    }
+
+    .assignment-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .meta-item {
+        background: #f5f3ff;
+        color: #5535a8;
+        padding: 7px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .assignment-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .btn-view-file {
+        background: #4b2aad;
+        color: white;
+        border-radius: 9px;
+        padding: 10px 17px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .btn-view-file:hover {
+        background: #382080;
+        color: white;
+    }
+
+    .btn-submit {
+        background: #ffffff;
+        color: #4b2aad;
+        border: 1px solid #4b2aad;
+        border-radius: 9px;
+        padding: 10px 17px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .btn-submit:hover {
+        background: #4b2aad;
+        color: white;
+    }
+
+    .no-assignments {
+        background: white;
+        border-radius: 18px;
+        padding: 50px 25px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(75, 42, 173, 0.07);
+    }
+
+    .no-assignments i {
+        font-size: 50px;
+        color: #8b6fd8;
+        margin-bottom: 15px;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="assignments-section">
+
+    <div class="container">
+
+        <div class="assignments-header">
+
+            <h1>
+                <i class="bi bi-journal-text"></i>
+                Assignments
+            </h1>
+
+            <p>
+                {{ course.title }} ke available assignments
+            </p>
+
+        </div>
+
+
+        {% if assignments %}
+
+            {% for assignment in assignments %}
+
+                <div class="assignment-card">
+
+                    <div class="assignment-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+
+                    <h3>
+                        {{ assignment.title }}
+                    </h3>
+
+                    <p class="assignment-description">
+                        {{ assignment.description }}
+                    </p>
+
+
+                    <div class="assignment-meta">
+
+                        {% if assignment.lecture %}
+                            <span class="meta-item">
+                                <i class="bi bi-play-circle"></i>
+                                {{ assignment.lecture.title }}
+                            </span>
+                        {% endif %}
+
+                        {% if assignment.due_date %}
+                            <span class="meta-item">
+                                <i class="bi bi-calendar-event"></i>
+                                Due: {{ assignment.due_date }}
+                            </span>
+                        {% else %}
+                            <span class="meta-item">
+                                <i class="bi bi-calendar-check"></i>
+                                No Due Date
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="assignment-actions">
+
+                        {% if assignment.assignment_file %}
+
+                            <a
+                                href="{{ assignment.assignment_file.url }}"
+                                target="_blank"
+                                class="btn-view-file">
+
+                                <i class="bi bi-file-earmark-pdf"></i>
+                                View Assignment
+
+                            </a>
+
+                        {% endif %}
+
+
+                        <a
+    href="{% url 'submit_assignment' assignment.id %}"
+    class="btn btn-primary"
+>
+    Submit Assignment
+</a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="no-assignments">
+
+                <i class="bi bi-journal-x"></i>
+
+                <h3>No Assignments Available</h3>
+
+                <p>
+                    Is course ke liye abhi koi assignment available nahi hai.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+{% endblock %}

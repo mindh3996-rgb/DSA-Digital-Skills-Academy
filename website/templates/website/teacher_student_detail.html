@@ -1,0 +1,683 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+Student Profile | DSA Digital Skills Academy
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    body {
+        background: #f6f7fb;
+    }
+
+    .student-detail-page {
+        padding: 35px 0 50px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        color: #6f42c1;
+        background: #f0eaff;
+        padding: 9px 14px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+        background: #6f42c1;
+        color: white;
+    }
+
+    /* Profile Header */
+
+    .profile-card {
+        background: white;
+        border-radius: 18px;
+        border: 1px solid #eeeaf4;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        padding: 28px;
+        margin-bottom: 22px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .profile-avatar {
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        background: #6f42c1;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .profile-header h2 {
+        color: #24133f;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+
+    .profile-header p {
+        margin: 0;
+        color: #888;
+    }
+
+    .active-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #dff5e8;
+        color: #198754;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+
+    /* Info */
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #eeeaf4;
+    }
+
+    .info-item {
+        background: #faf9fc;
+        padding: 15px;
+        border-radius: 11px;
+    }
+
+    .info-item small {
+        display: block;
+        color: #999;
+        margin-bottom: 4px;
+    }
+
+    .info-item strong {
+        color: #24133f;
+        word-break: break-word;
+    }
+
+    /* Stats */
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #eeeaf4;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: #f0eaff;
+        color: #6f42c1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .stat-card h3 {
+        margin: 0;
+        color: #24133f;
+        font-weight: 800;
+    }
+
+    .stat-card p {
+        margin: 3px 0 0;
+        color: #888;
+        font-size: 12px;
+    }
+
+    /* Submissions */
+
+    .submissions-card {
+        background: white;
+        border-radius: 18px;
+        border: 1px solid #eeeaf4;
+        box-shadow: 0 5px 20px rgba(36,19,63,.06);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        padding: 20px 22px;
+        border-bottom: 1px solid #eeeaf4;
+    }
+
+    .card-header-custom h5 {
+        margin: 0;
+        color: #24133f;
+        font-weight: 750;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .submission-table {
+        width: 100%;
+        min-width: 750px;
+        border-collapse: collapse;
+    }
+
+    .submission-table th {
+        background: #faf9fc;
+        padding: 13px 18px;
+        color: #777;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .submission-table td {
+        padding: 15px 18px;
+        border-top: 1px solid #f0edf5;
+        color: #444;
+        font-size: 13px;
+    }
+
+    .status {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .reviewed {
+        background: #dff5e8;
+        color: #198754;
+    }
+
+    .pending {
+        background: #fff0d6;
+        color: #b36b00;
+    }
+
+    .view-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+        background: #6f42c1;
+        color: white;
+        padding: 7px 11px;
+        border-radius: 8px;
+        font-size: 11px;
+    }
+
+    .view-btn:hover {
+        background: #59339d;
+        color: white;
+    }
+
+    .empty-state {
+        padding: 50px 20px;
+        text-align: center;
+        color: #888;
+    }
+
+    .empty-state i {
+        font-size: 45px;
+        color: #cbbde0;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 800px) {
+
+        .info-grid,
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-header {
+            align-items: flex-start;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container student-detail-page">
+
+    <a href="{% url 'teacher_students' %}"
+       class="back-btn">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to Students
+
+    </a>
+
+
+    <!-- PROFILE -->
+
+    <div class="profile-card">
+
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+
+                {{ student.username|first|upper }}
+
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {% if student.student_profile.full_name %}
+
+                        {{ student.student_profile.full_name }}
+
+                    {% else %}
+
+                        {{ student.username }}
+
+                    {% endif %}
+
+                </h2>
+
+                <p>
+                    @{{ student.username }}
+                </p>
+
+                {% if student.is_active %}
+
+                    <span class="active-badge">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Active Student
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info-item">
+
+                <small>
+                    Email
+                </small>
+
+                <strong>
+
+                    {% if student.email %}
+                        {{ student.email }}
+                    {% else %}
+                        Not provided
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <small>
+                    Phone
+                </small>
+
+                <strong>
+
+                    {% if student.student_profile.phone %}
+                        {{ student.student_profile.phone }}
+                    {% else %}
+                        Not provided
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <small>
+                    City
+                </small>
+
+                <strong>
+
+                    {% if student.student_profile.city %}
+                        {{ student.student_profile.city }}
+                    {% else %}
+                        Not provided
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <small>
+                    Joined Academy
+                </small>
+
+                <strong>
+                    {{ student.date_joined|date:"d M Y" }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <small>
+                    Last Login
+                </small>
+
+                <strong>
+
+                    {% if student.last_login %}
+                        {{ student.last_login|date:"d M Y, h:i A" }}
+                    {% else %}
+                        Never
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <small>
+                    Account Status
+                </small>
+
+                <strong>
+
+                    {% if student.is_active %}
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUBMISSION STATS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ total_submissions }}
+                </h3>
+
+                <p>
+                    Total Submissions
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-clock-fill"></i>
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ pending_submissions }}
+                </h3>
+
+                <p>
+                    Pending Reviews
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ reviewed_submissions }}
+                </h3>
+
+                <p>
+                    Reviewed
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUBMISSIONS -->
+
+    <div class="submissions-card">
+
+        <div class="card-header-custom">
+
+            <h5>
+
+                <i class="bi bi-journal-check me-2"></i>
+
+                Student Assignment Submissions
+
+            </h5>
+
+        </div>
+
+
+        {% if submissions %}
+
+        <div class="table-wrapper">
+
+            <table class="submission-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Assignment
+                        </th>
+
+                        <th>
+                            Course
+                        </th>
+
+                        <th>
+                            Lecture
+                        </th>
+
+                        <th>
+                            Submitted
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for submission in submissions %}
+
+                    <tr>
+
+                        <td>
+                            {{ submission.assignment.title }}
+                        </td>
+
+                        <td>
+                            {{ submission.assignment.course.title }}
+                        </td>
+
+                        <td>
+
+                            {% if submission.assignment.lecture %}
+
+                                Lecture
+                                {{ submission.assignment.lecture.lecture_number }}
+
+                            {% else %}
+
+                                General Assignment
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ submission.submitted_at|date:"d M Y, h:i A" }}
+                        </td>
+
+                        <td>
+
+                            {% if submission.status == "reviewed" %}
+
+                                <span class="status reviewed">
+
+                                    <i class="bi bi-check-circle me-1"></i>
+
+                                    Reviewed
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="status pending">
+
+                                    <i class="bi bi-clock me-1"></i>
+
+                                    Pending
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <a href="{% url 'submission_detail' submission.id %}"
+                               class="view-btn">
+
+                                <i class="bi bi-eye"></i>
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <i class="bi bi-inbox"></i>
+
+            <h5>
+                No Assignments Submitted
+            </h5>
+
+            <p>
+                This student has not submitted any assignments yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

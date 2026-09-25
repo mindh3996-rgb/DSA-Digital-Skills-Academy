@@ -1,0 +1,212 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+Delete Assignment | DSA Digital Skills Academy
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .delete-page {
+        min-height: calc(100vh - 100px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 15px;
+        background: #f6f7fb;
+    }
+
+    .delete-card {
+        width: 100%;
+        max-width: 600px;
+        background: #ffffff;
+        border: 0;
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(36, 19, 63, 0.10);
+        overflow: hidden;
+    }
+
+    .delete-header {
+        background: #24133f;
+        padding: 28px 25px;
+        text-align: center;
+        color: white;
+    }
+
+    .delete-icon {
+        width: 75px;
+        height: 75px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+
+    .delete-header h3 {
+        margin: 0;
+        font-weight: 800;
+    }
+
+    .delete-body {
+        padding: 40px 35px;
+        text-align: center;
+    }
+
+    .delete-body p {
+        color: #777;
+        line-height: 1.7;
+    }
+
+    .assignment-name {
+        display: inline-block;
+        background: #f0eaff;
+        color: #6f42c1;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 700;
+        margin: 10px 0 18px;
+        word-break: break-word;
+    }
+
+    .warning-text {
+        font-size: 13px;
+        color: #dc3545 !important;
+        margin-bottom: 28px;
+    }
+
+    .delete-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .delete-actions .btn {
+        min-width: 145px;
+        padding: 11px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 576px) {
+
+        .delete-page {
+            padding: 30px 15px;
+        }
+
+        .delete-body {
+            padding: 30px 20px;
+        }
+
+        .delete-actions {
+            flex-direction: column;
+        }
+
+        .delete-actions .btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="delete-page">
+
+    <div class="delete-card">
+
+        <!-- Header -->
+
+        <div class="delete-header">
+
+            <div class="delete-icon">
+
+                <i class="bi bi-trash3-fill"></i>
+
+            </div>
+
+            <h3>
+                Delete Assignment
+            </h3>
+
+        </div>
+
+
+        <!-- Body -->
+
+        <div class="delete-body">
+
+            <p class="mb-2">
+                Are you sure you want to permanently delete this assignment?
+            </p>
+
+
+            <div class="assignment-name">
+
+                <i class="bi bi-file-earmark-text me-2"></i>
+
+                {{ assignment.title }}
+
+            </div>
+
+
+            <p class="warning-text">
+
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+
+                This action cannot be undone. All information related to
+                this assignment will be removed.
+
+            </p>
+
+
+            <!-- Delete Form -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="delete-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger"
+                    >
+
+                        <i class="bi bi-trash3-fill me-1"></i>
+
+                        Yes, Delete
+
+                    </button>
+
+
+                    <a
+                        href="{% url 'teacher_course_manage' assignment.course.id %}"
+                        class="btn btn-outline-secondary"
+                    >
+
+                        <i class="bi bi-arrow-left me-1"></i>
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
