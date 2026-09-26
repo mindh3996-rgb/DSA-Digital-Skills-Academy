@@ -88,15 +88,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "academy_db",
-        "USER": "postgres",
-        "PASSWORD": os.environ.get("LOCAL_DB_PASSWORD"),
-        "HOST": "localhost",
-        "PORT": "5432",
-        "OPTIONS": {},
+        "NAME": urlparse(DATABASE_URL).path[1:],
+        "USER": urlparse(DATABASE_URL).username,
+        "PASSWORD": urlparse(DATABASE_URL).password,
+        "HOST": urlparse(DATABASE_URL).hostname,
+        "PORT": urlparse(DATABASE_URL).port or 5432,
+        "OPTIONS": {
+            "sslmode": "require",
+        },
     }
 }
 # Password validation
