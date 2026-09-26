@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    "cloudinary",
+    "cloudinary_storage",
+
     'website',
 ]
 
@@ -87,14 +91,12 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": urlparse(DATABASE_URL).path[1:],
-        "USER": urlparse(DATABASE_URL).username,
-        "PASSWORD": urlparse(DATABASE_URL).password,
-        "HOST": urlparse(DATABASE_URL).hostname,
-        "PORT": urlparse(DATABASE_URL).port or 5432,
-        "OPTIONS": {
-            "sslmode": "require",
-        },
+        "NAME": "academy_db",
+        "USER": "postgres",
+        "PASSWORD": os.environ.get("LOCAL_DB_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "5432",
+        "OPTIONS": {},
     }
 }
 # Password validation
@@ -131,13 +133,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
@@ -151,3 +158,9 @@ LOGIN_URL = "student_login"
 LOGIN_REDIRECT_URL = "student_dashboard"
 
 LOGOUT_REDIRECT_URL = "home"
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
