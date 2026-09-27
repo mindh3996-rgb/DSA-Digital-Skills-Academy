@@ -172,6 +172,10 @@ def register_student(request):
 def student_login(request):
 
     if request.user.is_authenticated:
+
+        if request.user.is_staff:
+            return redirect("teacher_dashboard")
+
         return redirect("student_dashboard")
 
     if request.method == "POST":
@@ -201,6 +205,11 @@ def student_login(request):
                 f"Welcome back, {user.username}!"
             )
 
+            # Admin / Teacher → Teacher Dashboard
+            if user.is_staff:
+                return redirect("teacher_dashboard")
+
+            # Student → Student Dashboard
             return redirect("student_dashboard")
 
         messages.error(
@@ -212,7 +221,6 @@ def student_login(request):
         request,
         "website/login.html"
     )
-
 
 @login_required(login_url="student_login")
 def student_dashboard(request):
